@@ -1,0 +1,345 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0
+    title: Daily lacto service
+    description: The DL service provides a REST interface to the data.
+tags:
+    - name: Daily lacto service
+      description: Operations pertaining to Daily lacto service
+servers:
+    - description: Daily lacto service
+      url: "https://degrassi-donair-92254.herokuapp.com/"
+paths:
+    /product:
+        get:
+            tags:
+                - Products
+            summary: returns a collection of all products
+            description: >-
+                This is the canonical index endpoint used to query the product database maintained by the service.
+            parameters:
+                - $ref: "#/components/parameters/Accept"
+                - $ref: "#/components/parameters/productId"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/productDetail"
+                "400":
+                    $ref: "#/components/responses/400Error"
+                "404":
+                    $ref: "#/components/responses/404Error"
+                "406":
+                    $ref: "#/components/responses/406Error"
+                "500":
+                    $ref: "#/components/responses/500Error"
+        post:
+            tags:
+                - Products
+            summary: Endpoint to update a perticular product based on id
+            description: >-
+                This is the canonical index endpoint used to query the product database maintained by the service.
+            parameters:
+                - $ref: "#/components/parameters/Accept"
+                - $ref: "#/components/parameters/productId"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/productDetail"
+                "400":
+                    $ref: "#/components/responses/400Error"
+                "404":
+                    $ref: "#/components/responses/404Error"
+                "406":
+                    $ref: "#/components/responses/406Error"
+                "500":
+                    $ref: "#/components/responses/500Error"
+
+    /order:
+        get:
+            tags:
+                - Orders
+            summary: returns a collection of all orders
+            description: >-
+                This is the canonical index endpoint used to query the order database maintained by the service.
+            parameters:
+                - $ref: "#/components/parameters/Accept"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderDetailArray"
+                "400":
+                    $ref: "#/components/responses/400Error"
+                "404":
+                    $ref: "#/components/responses/404Error"
+                "406":
+                    $ref: "#/components/responses/406Error"
+                "500":
+                    $ref: "#/components/responses/500Error"
+        post:
+            tags:
+                - Orders
+            summary: saves a particular order
+            description: >-
+                This is the canonical index endpoint used to query the order database maintained by the service.
+            parameters:
+                - $ref: "#/components/parameters/Accept"
+            requestBody:
+                description: Request body
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/orderDetail"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderDetail"
+                "400":
+                    $ref: "#/components/responses/400Error"
+                "404":
+                    $ref: "#/components/responses/404Error"
+                "406":
+                    $ref: "#/components/responses/406Error"
+                "500":
+                    $ref: "#/components/responses/500Error"
+    /order/{id}:
+        put:
+            tags:
+                - Orders
+            summary: Endpoint to update a particular order based on id
+            description: >-
+                This is the canonical index endpoint used to query the order database maintained by the service.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 0
+                      maxLength: 255
+                      description: The order ID
+            requestBody:
+                description: Request body
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/orderDetail"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderDetail"
+                "400":
+                    $ref: "#/components/responses/400Error"
+                "404":
+                    $ref: "#/components/responses/404Error"
+                "406":
+                    $ref: "#/components/responses/406Error"
+                "500":
+                    $ref: "#/components/responses/500Error"
+        delete:
+            tags:
+                - Orders
+            summary: Endpoint to delete a particular order based on id
+            description: >-
+                This is the canonical index endpoint used to query the order database maintained by the service.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 0
+                      maxLength: 255
+                      description: The order ID
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderDetail"
+                "400":
+                    $ref: "#/components/responses/400Error"
+                "404":
+                    $ref: "#/components/responses/404Error"
+                "406":
+                    $ref: "#/components/responses/406Error"
+                "500":
+                    $ref: "#/components/responses/500Error"
+        get:
+            tags:
+                - Orders
+            summary: returns an order by id
+            description: >-
+                This is the canonical index endpoint used to query the order database maintained by the service.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 0
+                      maxLength: 255
+                      description: The order ID
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderDetail"
+                "400":
+                    $ref: "#/components/responses/400Error"
+                "404":
+                    $ref: "#/components/responses/404Error"
+                "406":
+                    $ref: "#/components/responses/406Error"
+                "500":
+                    $ref: "#/components/responses/500Error"
+
+components:
+    schemas:
+        orderDetailArray:
+            type: array
+            items:
+                $ref: "#/components/schemas/orderDetail"
+        productDetail:
+            type: object
+            required:
+                - productId
+                - productName
+            properties:
+                productId:
+                    type: string
+                    minLength: 0
+                    maxLength: 255
+                    default: "pId1"
+                productName:
+                    type: string
+                    minLength: 0
+                    maxLength: 255
+                    default: "pIdName"
+        orderDetail:
+            type: object
+            required:
+                - order_id
+                - status_id
+                - quantity
+                - total_amount
+                - _id
+            properties:
+                order_id:
+                    type: string
+                    minLength: 0
+                    maxLength: 255
+                status_id:
+                    type: string
+                    minLength: 0
+                    maxLength: 255
+                quantity:
+                    type: integer
+                    minimum: 0
+                    default: 10
+                total_amount:
+                    type: string
+                    minLength: 0
+                    maxLength: 255
+                _id:
+                    type: string
+                    minLength: 0
+                    maxLength: 255
+    parameters:
+        productId:
+            name: productId
+            in: query
+            description: id to filter upon the products collection
+            required: false
+            schema:
+                type: string
+                minLength: 0
+                maxLength: 255
+        Content-type:
+            name: content-type
+            in: header
+            description: Content type for the request payload
+            required: true
+            schema:
+                type: string
+                minLength: 0
+                maxLength: 255
+                default: "application/json"
+        Accept:
+            name: accept
+            in: header
+            description: Supported type for the response payload
+            required: false
+            schema:
+                type: string
+                minLength: 0
+                maxLength: 255
+                default: "application/json"
+    responses:
+        400Error:
+            description: Invalid request.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: string
+                                minLength: 0
+                                maxLength: 255
+                                default: "default"
+        404Error:
+            description: Resource not found.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: string
+                                minLength: 0
+                                maxLength: 255
+                                default: "default"
+        406Error:
+            description: Not Acceptable.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: string
+                                minLength: 0
+                                maxLength: 255
+                                default: "default"
+        500Error:
+            description: Internal server error.
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: string
+                                minLength: 0
+                                maxLength: 255
+                                default: "default"
